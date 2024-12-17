@@ -27,5 +27,5 @@ val appModule = module {
 val appModules = listOf(
     appModule,
     repositoryModule,
-    //viewModelModule
+    viewModelModule
 )
