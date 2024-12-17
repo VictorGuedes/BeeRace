@@ -3,8 +3,8 @@ package com.oligue.app.beerace.data.usecases
 import com.oligue.app.beerace.data.model.Bee
 import com.oligue.app.beerace.data.model.BeeRankResponse
 import com.oligue.app.beerace.data.repositories.BeeRaceRepository
-import com.oligue.app.beerace.ui.model.BeeResponseUI
-import com.oligue.app.beerace.ui.model.BeeUI
+import com.oligue.app.beerace.ui.base.model.BeeResponseUI
+import com.oligue.app.beerace.ui.base.model.BeeUI
 
 class GetRaceRankListUseCase(
     private val repository: BeeRaceRepository
@@ -17,7 +17,7 @@ class GetRaceRankListUseCase(
     }
 }
 
-fun BeeRankResponse.toBeeReponseUI() : BeeResponseUI{
+fun BeeRankResponse.toBeeReponseUI() : BeeResponseUI {
     return BeeResponseUI(
         beeList = beeList.map {
             it.toBeeUI()

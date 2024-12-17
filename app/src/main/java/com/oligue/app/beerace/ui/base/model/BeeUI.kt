@@ -1,4 +1,4 @@
-package com.oligue.app.beerace.ui.model
+package com.oligue.app.beerace.ui.base.model
 
 import kotlinx.serialization.Serializable
 
