@@ -1,4 +1,4 @@
-package com.oligue.app
+package com.oligue.app.beerace
 
 import android.app.Application
 import com.oligue.app.beerace.di.appModules
