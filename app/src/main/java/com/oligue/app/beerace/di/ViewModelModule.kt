@@ -10,11 +10,15 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     viewModel{
+        MainViewModel()
+    }
+
+    viewModel{
         BeeRankingViewModel(
             getRaceDurationUseCase = GetRaceDurationUseCase(repository = get()),
             getRaceRankListUseCase = GetRaceRankListUseCase(repository = get())
         )
 
-        MainViewModel()
+
     }
 }
