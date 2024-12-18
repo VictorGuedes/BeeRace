@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BeeRace</string>
     <string name="start_text">Start Bee Race</string>
+    <string name="time_remaining_tex">Time remaining</string>
 </resources>
