@@ -56,6 +56,8 @@ dependencies {
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation (libs.logging.interceptor)
+
 
     //Di - Koin
     implementation(libs.koin.android)
