@@ -16,8 +16,8 @@ class BeeRankingContract {
     data class Success(
         val timeInSeconds: String,
         val beeResponseUI: BeeResponseUI,
-        val loading: Boolean,
-        val error: Boolean
+        val error: Boolean,
+        val openWebView: Boolean
     ): ViewState
 
     sealed class Effect : ViewSideEffect {

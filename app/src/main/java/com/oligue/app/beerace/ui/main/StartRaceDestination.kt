@@ -2,6 +2,7 @@ package com.oligue.app.beerace.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import com.oligue.app.beerace.navigation.ScreensNavigation
 import com.oligue.app.beerace.ui.main.viewmodel.MainContract
 import com.oligue.app.beerace.ui.main.viewmodel.MainViewModel
 import org.koin.androidx.compose.getViewModel
@@ -24,5 +25,5 @@ fun StartRaceDestination(navController: NavController) {
 private fun navigateToRanking(
     navController: NavController
 ){
-    //navController.navigate(route = "")
+    navController.navigate(route = ScreensNavigation.ScreenRanking.route)
 }

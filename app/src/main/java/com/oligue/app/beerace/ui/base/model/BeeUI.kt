@@ -10,5 +10,7 @@ data class BeeResponseUI(
 @Serializable
 data class BeeUI(
     val color: String,
-    val name: String
+    val name: String,
+    val positionString: String,
+    val position: Int
 )

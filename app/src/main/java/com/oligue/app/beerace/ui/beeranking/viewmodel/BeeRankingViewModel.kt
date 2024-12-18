@@ -1,16 +1,24 @@
 package com.oligue.app.beerace.ui.beeranking.viewmodel
 
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.oligue.app.beerace.data.services.exceptions.ErrorException
 import com.oligue.app.beerace.data.usecases.GetRaceDurationUseCase
 import com.oligue.app.beerace.data.usecases.GetRaceRankListUseCase
 import com.oligue.app.beerace.ui.base.BaseViewModel
 import com.oligue.app.beerace.ui.base.model.BeeResponseUI
+import com.oligue.app.beerace.utils.convertMillisecondsToUI
+import com.oligue.app.beerace.utils.convertToMilliseconds
+import com.oligue.app.beerace.utils.convertToSeconds
 import kotlinx.coroutines.launch
 
 class BeeRankingViewModel(
     private val getRaceDurationUseCase: GetRaceDurationUseCase,
     private val getRaceRankListUseCase: GetRaceRankListUseCase
 ): BaseViewModel<BeeRankingContract.Event, BeeRankingContract.Success, BeeRankingContract.Effect>() {
+
+    private var countDownTimer: CountDownTimer? = null
 
     init {
         getRaceDuration()
@@ -20,8 +28,8 @@ class BeeRankingViewModel(
         return BeeRankingContract.Success(
             timeInSeconds = "00:00",
             beeResponseUI = BeeResponseUI(beeList = emptyList()),
-            loading = true,
-            error = false
+            error = false,
+            openWebView = false
         )
     }
 
@@ -34,19 +42,78 @@ class BeeRankingViewModel(
     private fun getRaceDuration(){
         viewModelScope.launch {
             getRaceDurationUseCase.getRaceDuration()
-                .onSuccess {
+                .onSuccess { response ->
+                    startCountDownTimer(response.timeInSeconds)
+                }
+                .onFailure {
                     setState {
                         copy(
-                            timeInSeconds = "00:10",
-                            beeResponseUI = BeeResponseUI(beeList = emptyList()),
-                            loading = false,
+                            openWebView = false,
+                            error = true
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun startCountDownTimer(timeInSeconds: Int){
+        countDownTimer = object : CountDownTimer(convertToMilliseconds(timeInSeconds), 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                val totalSeconds = convertToSeconds(millisUntilFinished)
+
+                if (totalSeconds.toInt() % 2 == 0){
+                    getRankingList()
+                }
+
+                setState {
+                    copy(
+                        timeInSeconds = convertMillisecondsToUI(totalSeconds),
+                        openWebView = false,
+                        error = false
+                    )
+                }
+            }
+
+            override fun onFinish() {
+                setState {
+                    copy(
+                        timeInSeconds = "done",
+                        openWebView = false,
+                        error = false
+                    )
+                }
+            }
+        }.start()
+    }
+
+    private fun getRankingList(){
+        viewModelScope.launch {
+            getRaceRankListUseCase.getRankList()
+                .onSuccess { response ->
+                    setState {
+                        copy(
+                            beeResponseUI = response,
+                            openWebView = false,
                             error = false
                         )
                     }
                 }
-                .onFailure {
-                    setState {
-                        copy(loading = false, error = true)
+                .onFailure { error ->
+                    if(error is ErrorException){
+                        setState {
+                            copy(
+                                openWebView = true,
+                                error = false
+                            )
+                        }
+                    } else {
+                        setState {
+                            copy(
+                                openWebView = false,
+                                error = true
+                            )
+                        }
                     }
                 }
         }

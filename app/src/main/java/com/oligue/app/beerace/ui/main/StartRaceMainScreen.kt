@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.oligue.app.beerace.R
 import com.oligue.app.beerace.ui.base.SIDE_EFFECTS_KEY
 import com.oligue.app.beerace.ui.main.viewmodel.MainContract
+import com.oligue.app.beerace.ui.theme.BeeRaceTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -60,11 +61,13 @@ fun StarRaceMainScreen(
 @PreviewScreenSizes
 @Composable
 fun StarRaceMainScreenPreview() {
-    Surface(color = MaterialTheme.colorScheme.background) {
-        StarRaceMainScreen(
-            effectFlow = null,
-            onEventSent = {},
-            onNavigationRequested = {},
-        )
+    BeeRaceTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            StarRaceMainScreen(
+                effectFlow = null,
+                onEventSent = {},
+                onNavigationRequested = {},
+            )
+        }
     }
 }

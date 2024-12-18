@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.oligue.app.beerace.ui.beeranking.RankingListScreenDestination
 import com.oligue.app.beerace.ui.main.StartRaceDestination
 
 fun NavGraphBuilder.RankingNestedNavigation(navController: NavHostController){
@@ -14,6 +15,10 @@ fun NavGraphBuilder.RankingNestedNavigation(navController: NavHostController){
     ){
         composable(route = ScreensNavigation.ScreenStartRace.route) {
             StartRaceDestination(navController)
+        }
+
+        composable(route = ScreensNavigation.ScreenRanking.route) {
+            RankingListScreenDestination(navController)
         }
     }
 }

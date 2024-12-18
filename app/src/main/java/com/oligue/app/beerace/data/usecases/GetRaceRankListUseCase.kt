@@ -19,15 +19,25 @@ class GetRaceRankListUseCase(
 
 fun BeeRankResponse.toBeeReponseUI() : BeeResponseUI {
     return BeeResponseUI(
-        beeList = beeList.map {
-            it.toBeeUI()
+        beeList = beeList.mapIndexed { index, bee ->
+            bee.toBeeUI(index)
         }
     )
 }
 
-fun Bee.toBeeUI(): BeeUI {
+fun Bee.toBeeUI(index: Int): BeeUI {
+    val position = index + 1
+
     return BeeUI(
         name = name,
-        color = color
+        color = color,
+        positionString = formatPosition(position),
+        position = position
     )
+}
+
+fun formatPosition(position: Int): String{
+    if (position == 1) return "$position st"
+    else if (position in 2..3) return "$position nd"
+    else return "$position th"
 }
