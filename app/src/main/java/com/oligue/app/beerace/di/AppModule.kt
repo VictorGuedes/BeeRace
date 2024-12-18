@@ -1,6 +1,7 @@
 package com.oligue.app.beerace.di
 
 import com.oligue.app.beerace.data.services.BeeAPI
+import com.oligue.app.beerace.data.services.ErrorInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -16,6 +17,7 @@ val appModule = module {
                     level = HttpLoggingInterceptor.Level.BODY
                 }
             )
+            .addInterceptor(ErrorInterceptor())
             .build()
     }
 

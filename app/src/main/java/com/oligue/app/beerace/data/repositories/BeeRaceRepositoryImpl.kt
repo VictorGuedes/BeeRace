@@ -3,6 +3,7 @@ package com.oligue.app.beerace.data.repositories
 import com.oligue.app.beerace.data.model.BeeRankResponse
 import com.oligue.app.beerace.data.model.RaceDuration
 import com.oligue.app.beerace.data.services.BeeAPI
+import com.oligue.app.beerace.data.services.exceptions.ErrorException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,6 +17,7 @@ class BeeRaceRepositoryImpl(
         beeAPI.getRaceDuration()
     }
 
+    @Throws(ErrorException::class)
     override suspend fun getRaceRankList(): Result<BeeRankResponse> = makeApiCall(dispatcher){
         beeAPI.getRaceRankList()
     }
