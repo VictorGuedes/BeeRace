@@ -1,7 +1,6 @@
 package com.oligue.app.beerace.ui.beeranking.viewmodel
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.oligue.app.beerace.data.services.exceptions.ErrorException
 import com.oligue.app.beerace.data.usecases.GetRaceDurationUseCase
@@ -29,13 +28,19 @@ class BeeRankingViewModel(
             timeInSeconds = "00:00",
             beeResponseUI = BeeResponseUI(beeList = emptyList()),
             error = false,
-            openWebView = false
+            openWebView = false,
+            raceEnds = false
         )
     }
 
     override fun handleEvents(event: BeeRankingContract.Event) {
         when(event){
-            is BeeRankingContract.Event.Retry -> {}
+            is BeeRankingContract.Event.startRace -> {
+                setState {
+                    setInitialState()
+                }
+                getRaceDuration()
+            }
         }
     }
 
@@ -80,7 +85,8 @@ class BeeRankingViewModel(
                     copy(
                         timeInSeconds = "done",
                         openWebView = false,
-                        error = false
+                        error = false,
+                        raceEnds = true
                     )
                 }
             }
@@ -101,6 +107,8 @@ class BeeRankingViewModel(
                 }
                 .onFailure { error ->
                     if(error is ErrorException){
+                        countDownTimer?.cancel()
+
                         setState {
                             copy(
                                 openWebView = true,

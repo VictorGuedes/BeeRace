@@ -1,6 +1,7 @@
 package com.oligue.app.beerace.data.repositories
 
 import com.oligue.app.beerace.ui.base.model.BeeUI
+import com.oligue.app.beerace.ui.base.model.WinnerUI
 
 val mockBeeList = mutableListOf(
     BeeUI(name = "BeeStouri", color = "#183da3", positionString = "1 st", position = 1),
@@ -9,3 +10,5 @@ val mockBeeList = mutableListOf(
     BeeUI(name = "Beech", color = "#464247", positionString = "3 th", position = 4),
     BeeUI(name = "BeeCome", color = "#6bcad6", positionString = "3 th", position = 5),
 )
+
+val winner = WinnerUI(beeName = "hamilton", color = "#183da3")

@@ -9,15 +9,15 @@ import com.oligue.app.beerace.ui.base.model.BeeResponseUI
 class BeeRankingContract {
 
     sealed class Event: ViewEvent {
-        object Retry : Event()
+        object startRace : Event()
     }
 
-    @Stable
     data class Success(
         val timeInSeconds: String,
         val beeResponseUI: BeeResponseUI,
         val error: Boolean,
-        val openWebView: Boolean
+        val openWebView: Boolean,
+        val raceEnds: Boolean
     ): ViewState
 
     sealed class Effect : ViewSideEffect {

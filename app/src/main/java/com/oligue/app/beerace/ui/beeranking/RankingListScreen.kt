@@ -12,8 +12,11 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.oligue.app.beerace.data.repositories.mockBeeList
 import com.oligue.app.beerace.ui.base.SIDE_EFFECTS_KEY
 import com.oligue.app.beerace.ui.base.model.BeeResponseUI
+import com.oligue.app.beerace.ui.base.model.WinnerUI
+import com.oligue.app.beerace.ui.beeranking.composables.ErrorUI
 import com.oligue.app.beerace.ui.beeranking.composables.RankingUI
 import com.oligue.app.beerace.ui.beeranking.composables.TopBar
+import com.oligue.app.beerace.ui.beeranking.composables.WinnerUIScreen
 import com.oligue.app.beerace.ui.beeranking.composables.openWebView
 import com.oligue.app.beerace.ui.beeranking.viewmodel.BeeRankingContract
 import com.oligue.app.beerace.ui.theme.BeeRaceTheme
@@ -44,8 +47,30 @@ fun RankingListScreen(
         topBar = { TopBar() }
     ) { paddingValues ->
         when {
-            state.openWebView -> {}
-            state.error -> {}
+            state.openWebView -> {
+                openWebView()
+            }
+
+            state.raceEnds -> {
+                if (state.beeResponseUI.beeList.isEmpty()){
+                    WinnerUIScreen(
+                        WinnerUI("No winner","#183da3"),
+                        Modifier.padding(paddingValues),
+                        onEventSent
+                    )
+                } else {
+                    val winner = state.beeResponseUI.beeList[0]
+                    WinnerUIScreen(
+                        WinnerUI(winner.name, winner.color),
+                        Modifier.padding(paddingValues),
+                        onEventSent
+                    )
+                }
+            }
+
+            state.error -> {
+                ErrorUI(Modifier.padding(paddingValues), onEventSent)
+            }
             else -> {
                 RankingUI(
                     timeInSeconds = state.timeInSeconds,
@@ -68,7 +93,8 @@ fun RankingListScreenPreview() {
                     timeInSeconds = "00:00",
                     beeResponseUI = BeeResponseUI(beeList = mockBeeList),
                     openWebView = false,
-                    error = false
+                    error = false,
+                    raceEnds = false
                 ),
                 effectFlow = null,
                 onEventSent = {},
